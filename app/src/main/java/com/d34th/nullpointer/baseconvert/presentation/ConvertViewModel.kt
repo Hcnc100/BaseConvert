@@ -1,34 +1,57 @@
 package com.d34th.nullpointer.baseconvert.presentation
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.d34th.nullpointer.baseconvert.R
-import com.d34th.nullpointer.baseconvert.core.delegates.PropertySavableBase
+import com.d34th.nullpointer.baseconvert.core.utils.ChangeBase
+import com.d34th.nullpointer.baseconvert.models.WorkConvert
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
 @HiltViewModel
 class ConvertViewModel @Inject constructor(
-    savedState: SavedStateHandle,
 ) : ViewModel() {
 
     companion object {
-        private const val KEY_BASE = "KEY_BASE_CONVERT"
-        private const val MAX_LENGTH_INPUT = 40
+        private const val MAX_LENGTH_INPUT = 80
     }
 
-    val listPropertyConvert = (2..16).map {
-        mapOf(
-            it to PropertySavableBase(
-                tagSavable = "${KEY_BASE}_$it",
-                hint = R.string.name_base,
-                label = R.string.label_base,
-                maxLength = MAX_LENGTH_INPUT,
-                savedState = savedState,
-                emptyError = R.string.empty_base,
-                lengthError = R.string.length_base_error
-            )
-        )
+    private var currentBaseInput: WorkConvert? = null
+
+    val listBaseConvert = (2..16).map {
+        WorkConvert(base = it, maxSize = MAX_LENGTH_INPUT)
     }
+
+
+    val basicBase = listBaseConvert.filter {
+        it.base in sequenceOf(2, 4, 8, 10, 16)
+    }
+
+    fun triggerConvert(newInput: String, baseInput: WorkConvert) {
+        this.currentBaseInput = baseInput
+        listBaseConvert.forEach {
+            it.jobConvert?.cancel()
+            if (it == this.currentBaseInput) {
+                baseInput.propertyBase.changeValue(newInput)
+            } else {
+                if (ChangeBase.validate(newInput, baseInput.base)) {
+                    it.jobConvert = viewModelScope.launch {
+                        val result = withContext(Dispatchers.IO) {
+                            ChangeBase.baseToBase(newInput, baseFrom = baseInput.base, it.base)
+                        }
+                        it.propertyBase.changeValue(result)
+                    }
+                } else {
+                    baseInput.propertyBase.setAnotherError(R.string.error_value_invalid)
+                    it.propertyBase.changeValue("")
+                }
+            }
+
+        }
+    }
+
 }

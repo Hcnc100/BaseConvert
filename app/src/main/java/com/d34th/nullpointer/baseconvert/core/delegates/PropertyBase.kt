@@ -1,14 +1,15 @@
 package com.d34th.nullpointer.baseconvert.core.delegates
 
 import androidx.annotation.StringRes
-import androidx.lifecycle.SavedStateHandle
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 
-class PropertySavableBase(
-    tagSavable: String,
+class PropertyBase(
+    val base: Int,
     @StringRes val hint: Int,
     @StringRes val label: Int,
     private val maxLength: Int,
-    savedState: SavedStateHandle,
     private val valueDefault: String = "",
     @StringRes private val emptyError: Int = RESOURCE_DEFAULT,
     @StringRes private val lengthError: Int = RESOURCE_DEFAULT,
@@ -17,12 +18,11 @@ class PropertySavableBase(
         private const val RESOURCE_DEFAULT = -1
     }
 
-    private val idSaved = "SAVED_PROPERTY_$tagSavable"
 
-    var currentValue by SavableComposeState(savedState, "$idSaved-CURRENT-VALUE", valueDefault)
+    var currentValue by mutableStateOf("")
         private set
 
-    var errorValue by SavableComposeState(savedState, "$idSaved-ERROR-VALUE", RESOURCE_DEFAULT)
+    var errorValue by mutableStateOf(RESOURCE_DEFAULT)
         private set
 
     val hasChanged: Boolean get() = this.currentValue != valueDefault
