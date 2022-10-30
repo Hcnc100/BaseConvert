@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.d34th.nullpointer.baseconvert.models.WorkConvert
-import com.d34th.nullpointer.baseconvert.presentation.EditableTextSavable
+import com.d34th.nullpointer.baseconvert.ui.screens.share.EditableTextSavable
 
 @Composable
 fun ListBaseConvert(

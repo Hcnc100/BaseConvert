@@ -1,6 +1,8 @@
 package com.d34th.nullpointer.baseconvert.core.utils
 
 import com.d34th.nullpointer.baseconvert.models.SubsStringFormatBase
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -10,6 +12,7 @@ import java.math.BigInteger
  * */
 object ChangeBase {
 
+    private const val MAX_LENGTH_FLOAT = 60
 
     /**
      * the valid function the string passed as an argument
@@ -97,18 +100,22 @@ object ChangeBase {
      *  @return string that contains the number convert
      * */
 
-    fun baseToBase(numberString: String, baseFrom: Int, baseTo: Int): String {
-        if (!validate(numberString, baseFrom)) return ""
-        return if (baseFrom != baseTo) {
-            with(preformatString(numberString)) {
-                val finalPartInt = changeBasePartInteger(baseFrom, baseTo, partInteger)
-                val finalPartFloat = if (hasPartFractional) {
-                    "." + changeBasePartFractional(baseFrom, baseTo, partFractional)
-                } else {
-                    ".0"
+    suspend fun baseToBase(numberString: String, baseFrom: Int, baseTo: Int): String =
+        coroutineScope {
+            if (!validate(numberString, baseFrom)) return@coroutineScope ""
+            return@coroutineScope if (baseFrom != baseTo) {
+                with(preformatString(numberString)) {
+                    val finalPartInt =
+                        async { changeBasePartInteger(baseFrom, baseTo, partInteger) }
+                    val finalPartFloat = async {
+                        if (hasPartFractional) {
+                            "." + changeBasePartFractional(baseFrom, baseTo, partFractional)
+                        } else {
+                            ""
+                        }
+                    }
+                    "$signed${finalPartInt.await()}${finalPartFloat.await()}"
                 }
-                "$signed$finalPartInt$finalPartFloat"
-            }
         } else {
             numberString
         }
@@ -239,22 +246,17 @@ object ChangeBase {
         val bigBase = BigDecimal(baseTo.toString())
         //variable that contains number part integer and part fractional
         var currentFullNumber: BigDecimal
-        //variable that avoid loops
-        var lastNumber = BigDecimal.ZERO
         //the loops always repeat if the current number is grater than 0
         while (currentNumber > BigDecimal.ZERO) {
             // multiply the current number for the base
             currentFullNumber = currentNumber * bigBase
             //if the last calculate number is equal this, so break, because
             //if not entry in a loop infinity
-            if (lastNumber == currentFullNumber) {
+            if (response.length == MAX_LENGTH_FLOAT) {
                 //and add ... to indicate periodic number
-                response.append("...")
+                response.append("&")
                 break
             }
-            //if not is equals save this number
-            //this will the last calculate number
-            lastNumber = currentFullNumber
             // obtains the integer part
             val numberPartInt = currentFullNumber.toInt()
             //obtains to representation in base hex

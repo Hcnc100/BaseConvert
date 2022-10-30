@@ -41,9 +41,14 @@ class ConvertViewModel @Inject constructor(
                 if (ChangeBase.validate(newInput, baseInput.base)) {
                     it.jobConvert = viewModelScope.launch {
                         val result = withContext(Dispatchers.IO) {
-                            ChangeBase.baseToBase(newInput, baseFrom = baseInput.base, it.base)
+                            ChangeBase.baseToBase(
+                                baseTo = it.base,
+                                numberString = newInput,
+                                baseFrom = baseInput.base
+                            )
                         }
-                        it.propertyBase.changeValue(result)
+                        it.hasOverflow = result.endsWith("&")
+                        it.propertyBase.changeValue(result.removeSuffix("&"))
                     }
                 } else {
                     baseInput.propertyBase.setAnotherError(R.string.error_value_invalid)
