@@ -53,7 +53,7 @@ object ChangeBase {
 
         //separate the number of the sing
         val (numberWithOutSigned, sign) =
-            if (numberToFormat.contains(Regex("[+-]"))) {
+            if (numberToFormat.matches(Regex("^[+-].*"))) {
                 Pair(
                     numberToFormat.substring(1, numberToFormat.length),
                     numberToFormat[0].toString()
@@ -64,25 +64,27 @@ object ChangeBase {
 
         // we obtain the location of point, this is important
         val indexPoint = numberWithOutSigned.indexOf('.')
+        val isFractional = indexPoint != -1
 
         //determine if the number has only part integer or is fractional
         // and divide that parts
-        val (hasFractional, partInt, partFloat) = if (indexPoint != -1) {
-            Triple(
-                true,
+        val (partInt, partFloat) = if (isFractional) {
+            Pair(
                 numberWithOutSigned.substring(0 until indexPoint),
                 numberWithOutSigned.substring(indexPoint + 1, numberWithOutSigned.length)
             )
         } else {
-            Triple(
-                false,
+            Pair(
                 numberWithOutSigned,
                 ""
             )
         }
         //return the numbers in parts
         return SubsStringFormatBase(
-            hasFractional, sign, partInt, partFloat
+            signed = sign,
+            partInteger = partInt,
+            partFractional = partFloat,
+            hasPartFractional = isFractional
         )
     }
 
