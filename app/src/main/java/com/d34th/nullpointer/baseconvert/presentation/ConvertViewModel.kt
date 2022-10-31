@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d34th.nullpointer.baseconvert.R
 import com.d34th.nullpointer.baseconvert.core.utils.ChangeBase
+import com.d34th.nullpointer.baseconvert.domain.SettingsRepository
 import com.d34th.nullpointer.baseconvert.models.WorkConvert
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConvertViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private var currentBaseInput: WorkConvert? = null
@@ -39,10 +42,12 @@ class ConvertViewModel @Inject constructor(
                 if (ChangeBase.validate(newInput, baseInput.base)) {
                     currentWorked.jobConvert = viewModelScope.launch {
                         val result = withContext(Dispatchers.IO) {
+                            val decimalPrecision = settingsRepository.currentPrecision.first()
                             ChangeBase.baseToBase(
                                 baseTo = currentWorked.base,
                                 numberString = newInput,
-                                baseFrom = baseInput.base
+                                baseFrom = baseInput.base,
+                                decimalPrecision = decimalPrecision
                             )
                         }
                         currentWorked.changeValue(result)

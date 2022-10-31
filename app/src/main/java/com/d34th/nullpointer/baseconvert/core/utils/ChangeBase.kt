@@ -12,8 +12,6 @@ import java.math.BigInteger
  * */
 object ChangeBase {
 
-    private const val MAX_LENGTH_FLOAT = 60
-
     /**
      * the valid function the string passed as an argument
      * has the valid characters for the corresponding base,
@@ -100,15 +98,31 @@ object ChangeBase {
      *  @return string that contains the number convert
      * */
 
-    suspend fun baseToBase(numberString: String, baseFrom: Int, baseTo: Int): String =
+    suspend fun baseToBase(
+        numberString: String,
+        baseFrom: Int,
+        baseTo: Int,
+        decimalPrecision: Int
+    ): String =
         coroutineScope {
             return@coroutineScope if (baseFrom != baseTo) {
                 with(preformatString(numberString)) {
                     val finalPartInt =
-                        async { changeBasePartInteger(baseFrom, baseTo, partInteger) }
+                        async {
+                            changeBasePartInteger(
+                                baseFrom = baseFrom,
+                                baseTo = baseTo,
+                                numberString = partInteger
+                            )
+                        }
                     val finalPartFloat = async {
                         if (hasPartFractional) {
-                            "." + changeBasePartFractional(baseFrom, baseTo, partFractional)
+                            "." + changeBasePartFractional(
+                                baseTo = baseTo,
+                                baseFrom = baseFrom,
+                                numberString = partFractional,
+                                decimalPrecision = decimalPrecision
+                            )
                         } else {
                             ""
                         }
@@ -133,17 +147,26 @@ object ChangeBase {
      * this only save calculations
      * */
 
-    private fun changeBasePartFractional(baseFrom: Int, baseTo: Int, numberString: String): String {
+    private fun changeBasePartFractional(
+        baseFrom: Int,
+        baseTo: Int,
+        numberString: String,
+        decimalPrecision: Int
+    ): String {
         val numberFractionalBase10 = if (baseFrom != 10) {
             anyPartFloatBaseToDecimal(
-                numberString,
-                baseFrom
+                numberString = numberString,
+                base = baseFrom
             )
         } else {
             numberString
         }
         val numberFractionalAnyBase = if (baseTo != 10) {
-            decimalPartFloatToAnyBase(numberFractionalBase10, baseTo)
+            decimalPartFloatToAnyBase(
+                numberFloat = numberFractionalBase10,
+                baseTo = baseTo,
+                decimalPrecision = decimalPrecision
+            )
         } else {
             numberFractionalBase10
         }
@@ -236,7 +259,11 @@ object ChangeBase {
      * @see StringBuffer
      * */
 
-    private fun decimalPartFloatToAnyBase(numberFloat: String, baseTo: Int): String {
+    private fun decimalPartFloatToAnyBase(
+        numberFloat: String,
+        baseTo: Int,
+        decimalPrecision: Int
+    ): String {
         //transform number a bigDecimal and is will be the first current number
         var currentNumber = BigDecimal("0.$numberFloat")
         //variable that has the response
@@ -251,7 +278,7 @@ object ChangeBase {
             currentFullNumber = currentNumber * bigBase
             //if the last calculate number is equal this, so break, because
             //if not entry in a loop infinity
-            if (response.length == MAX_LENGTH_FLOAT) {
+            if (response.length == decimalPrecision) {
                 break
             }
             // obtains the integer part

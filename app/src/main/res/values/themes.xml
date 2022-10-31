@@ -2,6 +2,13 @@
 <resources>
 
     <style name="Theme.BaseConvert" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:statusBarColor">@color/greenDark</item>
+    </style>
+
+    <style name="Theme.MySplash" parent="Theme.SplashScreen">
+        <item name="splashScreenIconSize">200dp</item>
+        <item name="windowSplashScreenBackground">@color/greenPrimaryColor</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_background</item>
+        <item name="postSplashScreenTheme">@style/Theme.MySplash</item>
     </style>
 </resources>

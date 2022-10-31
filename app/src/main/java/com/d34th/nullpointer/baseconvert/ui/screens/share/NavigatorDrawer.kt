@@ -9,12 +9,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import coil.compose.AsyncImage
+import com.d34th.nullpointer.baseconvert.R
 import com.d34th.nullpointer.baseconvert.ui.navigation.MainDestinations
 import com.d34th.nullpointer.baseconvert.ui.screens.appDestination
 import com.d34th.nullpointer.baseconvert.ui.screens.destinations.Destination
@@ -109,14 +112,14 @@ private fun ListDestinationDrawer(
 private fun ImageDraw(
     modifier: Modifier = Modifier
 ) {
-//    AsyncImage(
-//        model = R.drawable.cover2,
-//        contentDescription = stringResource(R.string.description_img_web),
-//        contentScale = ContentScale.Crop,
-//        modifier = modifier
-//            .fillMaxWidth()
-//            .aspectRatio(1.8f)
-//    )
+    AsyncImage(
+        model = R.drawable.low_polyi,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(1.8f)
+    )
 }
 
 private fun getColorSelected(

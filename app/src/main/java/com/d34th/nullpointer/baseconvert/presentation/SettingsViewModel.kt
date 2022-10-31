@@ -15,9 +15,9 @@ class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
-    val listPrecision = (10..100 step 10).map { it.toString() }
+    val listPrecision = (10..50 step 10).map { it.toString() }
 
-    val currentPrecision = settingsRepository.currentPrecision.transform<Int, String> {
+    val currentPrecision = settingsRepository.currentPrecision.transform {
         emit(it.toString())
     }.stateIn(
         scope = viewModelScope,
