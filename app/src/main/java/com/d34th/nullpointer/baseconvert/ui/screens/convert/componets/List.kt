@@ -13,7 +13,6 @@ import com.d34th.nullpointer.baseconvert.ui.screens.share.EditableTextSavable
 fun ListBaseConvert(
     listBase: List<WorkConvert>,
     modifier: Modifier = Modifier,
-    actionCopyValue: (String) -> Unit,
     triggerBaseConvert: (String, WorkConvert) -> Unit
 ) {
     LazyColumn(
@@ -24,7 +23,6 @@ fun ListBaseConvert(
             EditableTextSavable(
                 workConvert = it,
                 triggerBaseConvert = triggerBaseConvert,
-                actionCopyValue = actionCopyValue
             )
         }
     }

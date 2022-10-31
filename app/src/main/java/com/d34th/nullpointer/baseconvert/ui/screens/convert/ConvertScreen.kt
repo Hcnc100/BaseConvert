@@ -23,7 +23,6 @@ fun ConvertScreen(
         listBasicBase = convertViewModel.basicBase,
         pagerState = convertScreenState.pagerState,
         listAllBase = convertViewModel.listBaseConvert,
-        actionCopyValue = convertScreenState::copyValue,
         actionChangePage = convertScreenState::changePage,
         triggerBaseConvert = convertViewModel::triggerConvert
     )
@@ -36,7 +35,6 @@ fun ConvertScreen(
     listAllBase: List<WorkConvert>,
     listBasicBase: List<WorkConvert>,
     actionChangePage: (Int) -> Unit,
-    actionCopyValue: (String) -> Unit,
     triggerBaseConvert: (String, WorkConvert) -> Unit,
 ) {
     Scaffold(
@@ -47,13 +45,11 @@ fun ConvertScreen(
                 0 -> ListBaseConvert(
                     listBase = listBasicBase,
                     modifier = Modifier.padding(it),
-                    actionCopyValue = actionCopyValue,
                     triggerBaseConvert = triggerBaseConvert
                 )
                 1 -> ListBaseConvert(
                     listBase = listAllBase,
                     modifier = Modifier.padding(it),
-                    actionCopyValue = actionCopyValue,
                     triggerBaseConvert = triggerBaseConvert
                 )
             }

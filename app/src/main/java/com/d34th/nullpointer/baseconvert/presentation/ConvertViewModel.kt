@@ -29,6 +29,7 @@ class ConvertViewModel @Inject constructor(
 
     fun triggerConvert(newInput: String, baseInput: WorkConvert) {
         this.currentBaseInput = baseInput
+
         listBaseConvert.forEach {
             it.jobConvert?.cancel()
             if (it == this.currentBaseInput) {
