@@ -1,6 +1,5 @@
 package com.d34th.nullpointer.baseconvert.ui.screens.convert.componets
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,7 +18,6 @@ fun ListBaseConvert(
 ) {
     LazyColumn(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(10.dp),
         contentPadding = PaddingValues(10.dp)
     ) {
         items(items = listBase, key = { it.base }) {

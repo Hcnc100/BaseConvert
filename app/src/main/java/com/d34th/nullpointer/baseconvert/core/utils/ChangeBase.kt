@@ -32,7 +32,7 @@ object ChangeBase {
             in 2..10 -> "[+-]?[0-$baseValue]+\\.?[0-$baseValue]*"
             // if the base is greater than 10, considered characters
             // alphanumeric , such as A->10,B-11 .. F->16
-            in 11..16 -> "[+-]?[0-9A-$baseValue]+\\.?[0-9A-$baseValue]*"
+            in 11..36 -> "[+-]?[0-9A-$baseValue]+\\.?[0-9A-$baseValue]*"
             // if the base is not in this ranges, return auto false
             else -> return false
 
@@ -102,7 +102,6 @@ object ChangeBase {
 
     suspend fun baseToBase(numberString: String, baseFrom: Int, baseTo: Int): String =
         coroutineScope {
-            if (!validate(numberString, baseFrom)) return@coroutineScope ""
             return@coroutineScope if (baseFrom != baseTo) {
                 with(preformatString(numberString)) {
                     val finalPartInt =
@@ -332,7 +331,7 @@ object ChangeBase {
     private fun Int.toValueHex(): String =
         when (this) {
             in 0..9 -> this
-            in 10..15 -> ('A'.code + this - 10).toChar()
+            in 10..35 -> ('A'.code + this - 10).toChar()
             else -> -1
         }.toString()
 
@@ -344,7 +343,7 @@ object ChangeBase {
     private fun Char.valueHexToDec(): Int =
         when (this) {
             in '0'..'9' -> this.code - '0'.code
-            in 'A'..'F' -> this.code - 'A'.code + 10
+            in 'A'..'Z' -> this.code - 'A'.code + 10
             else -> -1
         }
 

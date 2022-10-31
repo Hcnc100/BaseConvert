@@ -18,7 +18,7 @@ class ConvertViewModel @Inject constructor(
 
     private var currentBaseInput: WorkConvert? = null
 
-    val listBaseConvert = (2..16).map {
+    val listBaseConvert = (2..36).map {
         WorkConvert(base = it)
     }
 
