@@ -1,5 +1,6 @@
 package com.d34th.nullpointer.baseconvert.presentation
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d34th.nullpointer.baseconvert.R
@@ -14,12 +15,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConvertViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private var currentBaseInput: WorkConvert? = null
 
     val listBaseConvert = (2..36).map {
-        WorkConvert(base = it)
+        WorkConvert(base = it, savedStateHandle = savedStateHandle)
     }
 
 
@@ -29,26 +31,26 @@ class ConvertViewModel @Inject constructor(
 
     fun triggerConvert(newInput: String, baseInput: WorkConvert) {
         this.currentBaseInput = baseInput
-
-        listBaseConvert.forEach {
-            it.jobConvert?.cancel()
-            if (it == this.currentBaseInput) {
-                baseInput.propertyBase.changeValue(newInput)
+        listBaseConvert.forEach { currentWorked ->
+            currentWorked.jobConvert?.cancel()
+            if (currentWorked == this.currentBaseInput) {
+                baseInput.changeValue(newInput)
             } else {
                 if (ChangeBase.validate(newInput, baseInput.base)) {
-                    it.jobConvert = viewModelScope.launch {
+                    currentWorked.jobConvert = viewModelScope.launch {
                         val result = withContext(Dispatchers.IO) {
                             ChangeBase.baseToBase(
-                                baseTo = it.base,
+                                baseTo = currentWorked.base,
                                 numberString = newInput,
                                 baseFrom = baseInput.base
                             )
                         }
-                        it.propertyBase.changeValue(result)
+                        currentWorked.changeValue(result)
                     }
                 } else {
-                    baseInput.propertyBase.setAnotherError(R.string.error_value_invalid)
-                    it.propertyBase.changeValue("")
+                    currentWorked.changeValue("")
+                    if (!baseInput.hasError)
+                        baseInput.setError(R.string.error_value_invalid)
                 }
             }
 

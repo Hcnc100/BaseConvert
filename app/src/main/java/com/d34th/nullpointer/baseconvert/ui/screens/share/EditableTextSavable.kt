@@ -22,13 +22,11 @@ import com.d34th.nullpointer.baseconvert.R
 import com.d34th.nullpointer.baseconvert.models.WorkConvert
 
 @Composable
-fun EditableTextSavable(
+fun EditableBaseSavable(
     workConvert: WorkConvert,
     modifier: Modifier = Modifier,
     triggerBaseConvert: (String, WorkConvert) -> Unit
 ) {
-
-    val valueProperty = workConvert.propertyBase
 
     Column(
         horizontalAlignment = Alignment.End
@@ -54,8 +52,8 @@ fun EditableTextSavable(
             OutlinedTextField(
                 singleLine = true,
                 maxLines = 1,
-                isError = valueProperty.hasError,
-                value = valueProperty.currentValue,
+                isError = workConvert.hasError,
+                value = workConvert.currentValue,
                 modifier = Modifier.fillMaxWidth(),
                 onValueChange = { triggerBaseConvert(it, workConvert) },
                 shape = RoundedCornerShape(bottomEnd = 15.dp, topEnd = 15.dp),
@@ -70,13 +68,10 @@ fun EditableTextSavable(
             )
         }
 
-
-
-
         Text(
-            text = if (valueProperty.hasError) stringResource(id = workConvert.propertyBase.errorValue) else "",
+            text = if (workConvert.hasError) stringResource(id = workConvert.errorValue) else "",
             style = MaterialTheme.typography.caption,
-            color = if (valueProperty.hasError) MaterialTheme.colors.error else Color.Unspecified
+            color = if (workConvert.hasError) MaterialTheme.colors.error else Color.Unspecified
         )
 
     }

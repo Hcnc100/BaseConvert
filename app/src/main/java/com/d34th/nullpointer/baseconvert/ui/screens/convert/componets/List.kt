@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.d34th.nullpointer.baseconvert.models.WorkConvert
-import com.d34th.nullpointer.baseconvert.ui.screens.share.EditableTextSavable
+import com.d34th.nullpointer.baseconvert.ui.screens.share.EditableBaseSavable
 
 @Composable
 fun ListBaseConvert(
@@ -20,7 +20,7 @@ fun ListBaseConvert(
         contentPadding = PaddingValues(10.dp)
     ) {
         items(items = listBase, key = { it.base }) {
-            EditableTextSavable(
+            EditableBaseSavable(
                 workConvert = it,
                 triggerBaseConvert = triggerBaseConvert,
             )
