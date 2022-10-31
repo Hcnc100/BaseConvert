@@ -8,11 +8,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.d34th.nullpointer.baseconvert.models.WorkConvert
 import com.d34th.nullpointer.baseconvert.presentation.ConvertViewModel
 import com.d34th.nullpointer.baseconvert.ui.screens.convert.componets.ListBaseConvert
-import com.d34th.nullpointer.baseconvert.ui.screens.convert.componets.TopAppBarTabs
+import com.d34th.nullpointer.baseconvert.ui.screens.convert.componets.Tabs
 import com.d34th.nullpointer.baseconvert.ui.states.ConvertScreenState
 import com.d34th.nullpointer.baseconvert.ui.states.rememberConvertScreenState
 import com.google.accompanist.pager.*
+import com.ramcosta.composedestinations.annotation.Destination
 
+@Destination(start = true)
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ConvertScreen(
@@ -38,7 +40,7 @@ fun ConvertScreen(
     triggerBaseConvert: (String, WorkConvert) -> Unit,
 ) {
     Scaffold(
-        topBar = { TopAppBarTabs(pagerState = pagerState, actionChangePage = actionChangePage) }
+        topBar = { Tabs(pagerState = pagerState, actionChangePage = actionChangePage) }
     ) {
         HorizontalPager(state = pagerState, count = 2) { page ->
             when (page) {
