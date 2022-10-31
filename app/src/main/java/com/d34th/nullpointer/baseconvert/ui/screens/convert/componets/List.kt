@@ -14,6 +14,7 @@ import com.d34th.nullpointer.baseconvert.ui.screens.share.EditableTextSavable
 fun ListBaseConvert(
     listBase: List<WorkConvert>,
     modifier: Modifier = Modifier,
+    actionCopyValue: (String) -> Unit,
     triggerBaseConvert: (String, WorkConvert) -> Unit
 ) {
     LazyColumn(
@@ -22,7 +23,11 @@ fun ListBaseConvert(
         contentPadding = PaddingValues(10.dp)
     ) {
         items(items = listBase, key = { it.base }) {
-            EditableTextSavable(workConvert = it, triggerBaseConvert = triggerBaseConvert)
+            EditableTextSavable(
+                workConvert = it,
+                triggerBaseConvert = triggerBaseConvert,
+                actionCopyValue = actionCopyValue
+            )
         }
     }
 }

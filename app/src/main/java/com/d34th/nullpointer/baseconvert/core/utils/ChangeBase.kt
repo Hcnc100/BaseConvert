@@ -253,8 +253,6 @@ object ChangeBase {
             //if the last calculate number is equal this, so break, because
             //if not entry in a loop infinity
             if (response.length == MAX_LENGTH_FLOAT) {
-                //and add ... to indicate periodic number
-                response.append("&")
                 break
             }
             // obtains the integer part

@@ -16,14 +16,10 @@ import javax.inject.Inject
 class ConvertViewModel @Inject constructor(
 ) : ViewModel() {
 
-    companion object {
-        private const val MAX_LENGTH_INPUT = 80
-    }
-
     private var currentBaseInput: WorkConvert? = null
 
     val listBaseConvert = (2..16).map {
-        WorkConvert(base = it, maxSize = MAX_LENGTH_INPUT)
+        WorkConvert(base = it)
     }
 
 
@@ -47,8 +43,7 @@ class ConvertViewModel @Inject constructor(
                                 baseFrom = baseInput.base
                             )
                         }
-                        it.hasOverflow = result.endsWith("&")
-                        it.propertyBase.changeValue(result.removeSuffix("&"))
+                        it.propertyBase.changeValue(result)
                     }
                 } else {
                     baseInput.propertyBase.setAnotherError(R.string.error_value_invalid)

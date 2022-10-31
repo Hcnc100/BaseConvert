@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">BaseConvert</string>
-    <string name="name_base">Base %d</string>
-    <string name="label_base">Escribe tu número</string>
     <string name="empty_base">Se necesita un numero valido</string>
     <string name="length_base_error">El numero no puede ser tan largo</string>
     <string name="error_value_invalid">Valor Invalido</string>
+    <string name="place_holder_input_number">Escribe tu número</string>
+    <string name="text_base">Base %d</string>
+    <string name="message_text_copied">Texto copiado</string>
+    <string name="empty_text_copy">No hay nada que copiar</string>
 </resources>

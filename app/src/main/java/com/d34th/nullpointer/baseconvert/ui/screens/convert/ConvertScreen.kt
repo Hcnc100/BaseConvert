@@ -16,14 +16,15 @@ import com.google.accompanist.pager.*
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ConvertScreen(
-    convertScreenState: ConvertScreenState = rememberConvertScreenState(),
-    convertViewModel: ConvertViewModel = hiltViewModel()
+    convertViewModel: ConvertViewModel = hiltViewModel(),
+    convertScreenState: ConvertScreenState = rememberConvertScreenState()
 ) {
     ConvertScreen(
         listBasicBase = convertViewModel.basicBase,
         pagerState = convertScreenState.pagerState,
-        actionChangePage = convertScreenState::changePage,
         listAllBase = convertViewModel.listBaseConvert,
+        actionCopyValue = convertScreenState::copyValue,
+        actionChangePage = convertScreenState::changePage,
         triggerBaseConvert = convertViewModel::triggerConvert
     )
 }
@@ -32,10 +33,11 @@ fun ConvertScreen(
 @Composable
 fun ConvertScreen(
     pagerState: PagerState,
-    actionChangePage: (Int) -> Unit,
     listAllBase: List<WorkConvert>,
     listBasicBase: List<WorkConvert>,
-    triggerBaseConvert: (String, WorkConvert) -> Unit
+    actionChangePage: (Int) -> Unit,
+    actionCopyValue: (String) -> Unit,
+    triggerBaseConvert: (String, WorkConvert) -> Unit,
 ) {
     Scaffold(
         topBar = { TopAppBarTabs(pagerState = pagerState, actionChangePage = actionChangePage) }
@@ -45,11 +47,13 @@ fun ConvertScreen(
                 0 -> ListBaseConvert(
                     listBase = listBasicBase,
                     modifier = Modifier.padding(it),
+                    actionCopyValue = actionCopyValue,
                     triggerBaseConvert = triggerBaseConvert
                 )
                 1 -> ListBaseConvert(
                     listBase = listAllBase,
                     modifier = Modifier.padding(it),
+                    actionCopyValue = actionCopyValue,
                     triggerBaseConvert = triggerBaseConvert
                 )
             }
