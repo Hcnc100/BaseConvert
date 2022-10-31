@@ -1,4 +1,4 @@
-package com.d34th.nullpointer.baseconvert.ui.states
+package com.d34th.nullpointer.baseconvert.ui.screens.share
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

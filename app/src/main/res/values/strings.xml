@@ -10,4 +10,6 @@
     <string name="title_change_base">Change Base</string>
     <string name="title_settings">Settings</string>
     <string name="description_drawer_menu">Open the drawer menu</string>
+    <string name="message_precision">Decimal precision</string>
+    <string name="text_explain_precision">La conversión de números decimales entre bases usa divisiones sucesivas, pero estas pueden entrar en bucle, por lo que se limita el tamaño de la parte faccionaria, y esta puede ser modificada aquí, indicando el número de decimales permitidos.</string>
 </resources>

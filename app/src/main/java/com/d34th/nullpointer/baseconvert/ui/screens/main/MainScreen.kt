@@ -6,9 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.d34th.nullpointer.baseconvert.ui.screens.NavGraphs
+import com.d34th.nullpointer.baseconvert.ui.screens.share.NavigatorDrawer
 import com.d34th.nullpointer.baseconvert.ui.screens.share.ToolbarMenu
 import com.d34th.nullpointer.baseconvert.ui.states.MainScreenState
-import com.d34th.nullpointer.baseconvert.ui.states.NavigatorDrawer
 import com.d34th.nullpointer.baseconvert.ui.states.rememberMainScreenState
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
