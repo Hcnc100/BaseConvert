@@ -6,6 +6,7 @@ import com.d34th.nullpointer.baseconvert.R
 import com.d34th.nullpointer.baseconvert.ui.screens.destinations.ConvertScreenDestination
 import com.d34th.nullpointer.baseconvert.ui.screens.destinations.DirectionDestination
 import com.d34th.nullpointer.baseconvert.ui.screens.destinations.SettingsScreenDestination
+import com.d34th.nullpointer.baseconvert.ui.screens.destinations.ExplanationScreenDestination
 
 enum class MainDestinations(
     @StringRes val label: Int,
@@ -22,6 +23,12 @@ enum class MainDestinations(
         label = R.string.title_settings,
         icon = R.drawable.ic_settings,
         destinations = SettingsScreenDestination
+    ),
+
+    Explanation(
+        label = R.string.title_explanation,
+        icon = R.drawable.ic_info,
+        destinations = ExplanationScreenDestination
     );
 
 

@@ -7,14 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.rememberPagerState
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalPagerApi::class)
 class ConvertScreenState(
     context: Context,
     val pagerState: PagerState,
@@ -28,13 +26,12 @@ class ConvertScreenState(
 }
 
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun rememberConvertScreenState(
     context: Context=LocalContext.current,
     scope: CoroutineScope= rememberCoroutineScope(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
-    pagerState: PagerState= rememberPagerState()
+    pagerState: PagerState= rememberPagerState(pageCount = { 2 })
 )= remember(scope,pagerState) {
     ConvertScreenState(
         scope = scope,

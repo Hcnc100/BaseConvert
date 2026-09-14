@@ -1,7 +1,7 @@
 package com.d34th.nullpointer.baseconvert.ui.screens.convert
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -11,11 +11,13 @@ import com.d34th.nullpointer.baseconvert.ui.screens.convert.componets.ListBaseCo
 import com.d34th.nullpointer.baseconvert.ui.screens.convert.componets.Tabs
 import com.d34th.nullpointer.baseconvert.ui.states.ConvertScreenState
 import com.d34th.nullpointer.baseconvert.ui.states.rememberConvertScreenState
-import com.google.accompanist.pager.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 
-@Destination(start = true)
-@OptIn(ExperimentalPagerApi::class)
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun ConvertScreen(
     convertViewModel: ConvertViewModel = hiltViewModel(),
@@ -30,7 +32,6 @@ fun ConvertScreen(
     )
 }
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ConvertScreen(
     pagerState: PagerState,
@@ -39,19 +40,19 @@ fun ConvertScreen(
     actionChangePage: (Int) -> Unit,
     triggerBaseConvert: (String, WorkConvert) -> Unit,
 ) {
-    Scaffold(
-        topBar = { Tabs(pagerState = pagerState, actionChangePage = actionChangePage) }
-    ) {
-        HorizontalPager(state = pagerState, count = 2) { page ->
+    Column(modifier = Modifier.fillMaxSize()) {
+        Tabs(pagerState = pagerState, actionChangePage = actionChangePage)
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.weight(1f)
+        ) { page ->
             when (page) {
                 0 -> ListBaseConvert(
                     listBase = listBasicBase,
-                    modifier = Modifier.padding(it),
                     triggerBaseConvert = triggerBaseConvert
                 )
                 1 -> ListBaseConvert(
                     listBase = listAllBase,
-                    modifier = Modifier.padding(it),
                     triggerBaseConvert = triggerBaseConvert
                 )
             }

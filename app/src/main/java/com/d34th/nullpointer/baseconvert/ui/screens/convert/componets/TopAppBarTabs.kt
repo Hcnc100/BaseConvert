@@ -1,46 +1,49 @@
 package com.d34th.nullpointer.baseconvert.ui.screens.convert.componets
 
-import androidx.compose.material.*
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.background
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Tab
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.pagerTabIndicatorOffset
+import androidx.compose.ui.res.stringResource
+import androidx.compose.material.Text
+import com.d34th.nullpointer.baseconvert.R
 
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Tabs(
     pagerState: PagerState,
     actionChangePage: (Int) -> Unit
 ) {
     val list = listOf(
-        "Basic Base",
-        "All Base"
+        stringResource(R.string.tab_basic_bases),
+        stringResource(R.string.tab_all_bases)
     )
-    TabRow(
-        backgroundColor = MaterialTheme.colors.primary,
-        selectedTabIndex = pagerState.currentPage,
-        contentColor = Color.White,
-        indicator = { tabPositions ->
-            TabRowDefaults.Indicator(
-                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
-                height = 2.dp,
-                color = Color.White
-            )
-        }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colors.primary)
     ) {
         list.forEachIndexed { index, title ->
+            val selected = pagerState.currentPage == index
             Tab(
+                modifier = Modifier
+                    .weight(1f)
+                    .background(
+                        if (selected) MaterialTheme.colors.primaryVariant
+                        else MaterialTheme.colors.primary
+                    ),
                 text = {
                     Text(
                         text = title,
-                        color = if (pagerState.currentPage == index) Color.White else Color.LightGray
+                        color = if (selected) Color.White else Color.LightGray
                     )
                 },
-                selected = pagerState.currentPage == index,
+                selected = selected,
                 onClick = { actionChangePage(index) }
             )
         }

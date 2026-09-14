@@ -1,6 +1,8 @@
 package com.d34th.nullpointer.baseconvert.ui.screens.share
 
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -16,6 +18,23 @@ fun ToolbarMenu(
         backgroundColor = MaterialTheme.colors.primary,
         title = { Text(text = title, color = Color.White) },
         navigationIcon = { IconMenu(actionClickMenu) }
+    )
+}
+
+@Composable
+fun ToolbarBack(title: String, onBack: () -> Unit) {
+    TopAppBar(
+        backgroundColor = MaterialTheme.colors.primary,
+        title = { Text(text = title, color = Color.White) },
+        navigationIcon = {
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.description_back),
+                    tint = Color.White
+                )
+            }
+        }
     )
 }
 

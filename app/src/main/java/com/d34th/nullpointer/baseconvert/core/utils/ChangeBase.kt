@@ -5,12 +5,16 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.MathContext
+import java.math.RoundingMode
 
 /**
  * this class contains a group of utility's
  * that convert one number in any base an any other base,
  * */
 object ChangeBase {
+
+    private val fractionalMathContext = MathContext(50, RoundingMode.HALF_UP)
 
     /**
      * the valid function the string passed as an argument
@@ -229,6 +233,8 @@ object ChangeBase {
         var residue: BigInteger
         //variable that save the representation of the base to convert in bigInteger
         val bigBase = BigInteger(baseTo.toString())
+        if (currentNumber == BigInteger.ZERO) return "0"
+
         //the loop will repeat while the current number is greater than zero
         while (currentNumber > BigInteger.ZERO) {
             //calculate the result of mod between the current number and the base
@@ -272,15 +278,12 @@ object ChangeBase {
         val bigBase = BigDecimal(baseTo.toString())
         //variable that contains number part integer and part fractional
         var currentFullNumber: BigDecimal
-        //the loops always repeat if the current number is grater than 0
-        while (currentNumber > BigDecimal.ZERO) {
+        // A periodic/irrational fractional representation never reaches zero.
+        // The configured precision is therefore the hard upper bound.
+        repeat(decimalPrecision.coerceAtLeast(0)) {
+            if (currentNumber <= BigDecimal.ZERO) return response.toString()
             // multiply the current number for the base
             currentFullNumber = currentNumber * bigBase
-            //if the last calculate number is equal this, so break, because
-            //if not entry in a loop infinity
-            if (response.length == decimalPrecision) {
-                break
-            }
             // obtains the integer part
             val numberPartInt = currentFullNumber.toInt()
             //obtains to representation in base hex
@@ -342,12 +345,14 @@ object ChangeBase {
             //save the char value as BigDecimal
             val digit = BigDecimal(numberString[index].valueHexToDec())
             //add to the current value the value of the digit multiplied by one over the current base
-            val fractional = BigDecimal.ONE.divide(currentPower)
+            // Some bases (for example 3) generate non-terminating decimal values.
+            // A MathContext prevents an ArithmeticException and keeps the result bounded.
+            val fractional = BigDecimal.ONE.divide(currentPower, fractionalMathContext)
             value += digit * fractional
             //multiply the power by the base, this for increase the power by one
             currentPower *= bigBase
         }
-        return value.toString().removePrefix("0.")
+        return value.toPlainString().removePrefix("0.")
     }
 
     /**

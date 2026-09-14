@@ -22,7 +22,6 @@ import com.d34th.nullpointer.baseconvert.ui.navigation.MainDestinations
 import com.d34th.nullpointer.baseconvert.ui.screens.appDestination
 import com.d34th.nullpointer.baseconvert.ui.screens.destinations.Destination
 import com.d34th.nullpointer.baseconvert.ui.screens.destinations.DirectionDestination
-import com.ramcosta.composedestinations.navigation.navigate
 
 @Composable
 fun NavigatorDrawer(
@@ -32,7 +31,7 @@ fun NavigatorDrawer(
     Drawer(
         navController = navController,
         onDestinationClicked = { route ->
-            navController.navigate(route) {
+            navController.navigate(route.route) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
                 }
