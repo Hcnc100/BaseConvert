@@ -15,7 +15,28 @@ Run these commands before merging or releasing:
 ./gradlew test lint assembleDebug
 ```
 
-The CI workflow runs the same checks for pull requests and pushes.
+The GitHub Actions workflow verifies every pull request and every push to `main`
+(unit tests, lint and debug build). After a successful `main` build, it creates a
+signed AAB and deploys it to Google Play. The deployment is protected by the
+`google-play-production` GitHub Environment; configure required reviewers there
+before merging a production release.
+
+### GitHub Actions secrets
+
+Add these **repository secrets** in
+`Settings` → `Secrets and variables` → `Actions` → `New repository secret`:
+
+| Secret | Value |
+| --- | --- |
+| `ANDROID_KEYSTORE_BASE64` | Base64 of the upload keystore (`base64 -w 0 release.keystore` on Linux/macOS; `[Convert]::ToBase64String([IO.File]::ReadAllBytes('release.keystore'))` in PowerShell). |
+| `ANDROID_KEYSTORE_PASSWORD` | Password of that keystore. |
+| `ANDROID_KEY_ALIAS` | Alias of the upload key. |
+| `ANDROID_KEY_PASSWORD` | Password of that alias. |
+| `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` | Complete JSON key of the service account authorized in Google Play Console with release permissions. |
+
+In `Settings` → `Environments`, create `google-play-production` and add the
+production approvers. A manual run can choose the `internal` track first; pushes
+to `main` deploy to `production` after the environment approval.
 
 ## Signed release
 
