@@ -17,9 +17,7 @@ Run these commands before merging or releasing:
 
 The GitHub Actions workflow verifies every pull request and every push to `main`
 (unit tests, lint and debug build). After a successful `main` build, it creates a
-signed AAB and deploys it to Google Play. The deployment is protected by the
-`google-play-production` GitHub Environment; configure required reviewers there
-before merging a production release.
+signed AAB and deploys it automatically to Google Play production.
 
 ### GitHub Actions secrets
 
@@ -34,9 +32,8 @@ Add these **repository secrets** in
 | `ANDROID_KEY_PASSWORD` | Password of that alias. |
 | `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` | Complete JSON key of the service account authorized in Google Play Console with release permissions. |
 
-In `Settings` → `Environments`, create `google-play-production` and add the
-production approvers. A manual run can choose the `internal` track first; pushes
-to `main` deploy to `production` after the environment approval.
+A manual run can choose the `internal` track first; every successful push to
+`main` deploys automatically to `production`.
 
 ## Signed release
 

@@ -43,9 +43,6 @@ jobs:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    # Configure this GitHub Environment with required reviewers before enabling
-    # automatic deployments to production.
-    environment: google-play-production
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
