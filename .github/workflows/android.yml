@@ -31,6 +31,10 @@ jobs:
           distribution: temurin
           java-version: '17'
           cache: gradle
+      - uses: android-actions/setup-android@v3
+        with:
+          # The legacy SDK package "tools" no longer exists on current runners.
+          packages: platform-tools
       - name: Accept Android licenses and install API 36
         run: |
           yes | sdkmanager --licenses
